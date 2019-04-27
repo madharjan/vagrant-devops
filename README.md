@@ -5,15 +5,15 @@ Ubuntu 14.04 for Development (devops)
 ## Features
 
 * build essential
-* git
-* wget
-* curl
-* dos2unix
-* tree
-* docker
-* java8 (openjdk8)
-* jq
-* python
+* git 1.9.1
+* wget 1.5
+* curl 7.35
+* dos2unix 6.0.4
+* tree 1.6
+* docker server/client 1.6.2, API 1.18
+* java7 OpenJDK 7u211
+* jq 1.3
+* python 2.7.6
 
 ## Installation
 
