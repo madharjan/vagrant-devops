@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "                                        "
+echo "       __             ___               "
+echo "     / __ \___ _   __/ __ \____  _____  "
+echo "    / / / / _ \ | / / / / / __ \/  __/  "
+echo "   / /_/ /  __/ |/ / /_/ / /_/ /(_  )   "
+echo "  /_____/\___/|___/\____/ .___/____/    "
+echo "                       /_/              "
+echo ""
+printf "  Welcome to %s (%s %s %s)\n" "DevOps Tools" "$(uname -o)" "$(uname -r)" "$(uname -m)"
+printf "  Your DevOps VM IP is: "
+echo `ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+printf "\n"
