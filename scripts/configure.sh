@@ -55,6 +55,35 @@ EOT
 sudo sysctl -f /etc/sysctl.d/88-disable_ipv6.conf
 echo "-----------------------------------------------------------------"
 
+echo " * Installing Node via NVM ..."
+echo "-----------------------------------------------------------------"
+/home/vagrant/bin/nvm_install.sh
+echo "-----------------------------------------------------------------"
+
+echo " * Configure FakeSMTP"
+echo "-----------------------------------------------------------------"
+sudo chown -R vagrant:vagrant /opt/fakesmtp
+sudo mv $HOME/conf/fakesmtp.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable fakesmtp
+sudo systemctl start fakesmtp
+echo "-----------------------------------------------------------------"
+
+echo " * Installing Swagger Editor"
+echo "-----------------------------------------------------------------"
+sudo mv $HOME/conf/swagger-editor.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable swagger-editor
+sudo systemctl start swagger-editor
+echo "-----------------------------------------------------------------"
+
+
+echo " * Configure Working folder /opt/data/"
+echo "-----------------------------------------------------------------"
+sudo mkdir -p /opt/data
+sudo chown vagrant:vagrant /opt/data
+echo "-----------------------------------------------------------------"
+
 echo " * Cleanup ..."
 echo "-----------------------------------------------------------------"
 
@@ -68,7 +97,7 @@ sudo rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup
 sudo rm -rf /usr/share/doc/*
 echo "-----------------------------------------------------------------"
 
-MY_IP=$(ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://')
+MY_IP=$(ifconfig enp0s8 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://')
 
 echo "*** Done"
 echo ""

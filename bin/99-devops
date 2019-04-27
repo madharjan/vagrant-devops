@@ -10,5 +10,5 @@ echo "                       /_/              "
 echo ""
 printf "  Welcome to %s (%s %s %s)\n" "DevOps Tools" "$(uname -o)" "$(uname -r)" "$(uname -m)"
 printf "  Your DevOps VM IP is: "
-echo `ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+echo `ifconfig enp0s8 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
 printf "\n"

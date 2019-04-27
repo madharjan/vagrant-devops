@@ -1,0 +1,22 @@
+[Unit]
+Description=Swagger Editor
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=-/usr/bin/docker stop docker-swagger-editor
+ExecStartPre=-/usr/bin/docker rm docker-swagger-editor
+ExecStartPre=/usr/bin/docker pull swaggerapi/swagger-editor
+
+ExecStart=/usr/bin/docker run \
+  -p 9000:8080 \
+  --name docker-swagger-editor \
+  swaggerapi/swagger-editor
+
+ExecStop=/usr/bin/docker stop -t 2 docker-swagger-editor
+
+[Install]
+WantedBy=multi-user.target

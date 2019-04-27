@@ -11,7 +11,8 @@ Vagrant.configure("2") do |config|
   #config.vm.network "forwarded_port", guest: 3306, host: 3306 # mysql
   #config.vm.network "forwarded_port", guest: 5432, host: 5432 # postgres
   config.vm.network "forwarded_port", guest: 8000, host: 8000 # java remode debug
-
+  config.vm.network "forwarded_port", guest: 9000, host: 9000 # swagger-editor
+  config.vm.network "forwarded_port", guest: 2525, host: 2525 # fakesmtp
   config.vm.network "private_network", ip: "192.168.56.254"
   config.vm.hostname = "devops"
 
@@ -27,9 +28,9 @@ Vagrant.configure("2") do |config|
 
   # configure provider
   config.vm.provider "virtualbox" do |virtualbox, override|
- 
-    override.vm.box = "ubuntu/trusty64"
-    override.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+
+    override.vm.box = "ubuntu/xenial64"
+    override.vm.box_url = "https://cloud-images.ubuntu.com/releases/16.04/release/ubuntu-16.04-server-cloudimg-amd64-vagrant.box"
     override.vm.box_check_update = false
     override.vm.usable_port_range= 2800..2900
     override.vm.boot_timeout = 600

@@ -1,0 +1,12 @@
+[Unit]
+Description=FakeSMTP
+After=syslog.target
+
+[Service]
+User=vagrant
+ExecStartPre=-/bin/mkdir -p /opt/fakesmtp/inbox
+ExecStart=/usr/bin/java -jar /opt/fakesmtp/fakesmtp-2.0.jar -s -b -p 2525 -o /opt/fakesmtp/inbox
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

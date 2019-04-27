@@ -1,19 +1,22 @@
 # vagrant-ubuntu
 
-Ubuntu 14.04 for Development (devops)
+Ubuntu 16.04 for Development (DevOps)
 
 ## Features
 
 * build essential
-* git 1.9.1
-* wget 1.5
-* curl 7.35
-* dos2unix 6.0.4
-* tree 1.6
-* docker server/client 1.6.2, API 1.18
-* java7 OpenJDK 7u211
-* jq 1.3
-* python 2.7.6
+* git - v2.7.4
+* wget - v1.17.1
+* curl - v7.47
+* dos2unix - v6.0.4
+* tree - v1.7.0
+* docker - v18.09.2
+* java7 - OpenJDK v1.8.0_191
+* jq - v1.5.1
+* python - v2.7.12
+* nvm - v0.33.11
+* fakesmtp - v2.0
+* swagger editor - latest
 
 ## Installation
 
