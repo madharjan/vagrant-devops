@@ -25,6 +25,8 @@ sudo sed -i -e'/JAVA_HOME/d' /etc/environment
 echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' | sudo tee -a /etc/environment
 sudo sed -i -e'/DOCKER_DRIVER/d' /etc/environment
 echo 'DOCKER_DRIVER=overlay2' | sudo tee -a /etc/environment
+sudo sed -i -e'/DOCKER_CONFIG/d' /etc/environment
+echo 'DOCKER_CONFIG=${HOME}/.docker' | sudo tee -a /etc/environment
 echo "-----------------------------------------------------------------"
 
 echo " * Adding MOTD ..."
