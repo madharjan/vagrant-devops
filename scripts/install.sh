@@ -2,6 +2,14 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+echo "*** Mount /dev/sdc for Docker ..."
+echo "================================================================="
+mkfs.ext4 /dev/sdc
+sed -i '/dev\/sdc/d' /etc/fstab
+echo "/dev/sdc /var/lib/docker  ext4  defaults 0 0" >> /etc/fstab
+mount /var/lib/docker
+echo "-----------------------------------------------------------------"
+
 echo "-----------------------------------------------------------------"
 echo " *** Updating Ubuntu Packages List ..."
 echo "================================================================="

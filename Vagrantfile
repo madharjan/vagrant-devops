@@ -3,16 +3,19 @@
 
 require "rbconfig"
 
+vmName = "vagrant-ubuntu"
 workspaceRoot = ENV['WORKSPACE_ROOT'] || './workspace'
 
 Vagrant.configure("2") do |config|
 
   # network
-  #config.vm.network "forwarded_port", guest: 3306, host: 3306 # mysql
-  #config.vm.network "forwarded_port", guest: 5432, host: 5432 # postgres
-  config.vm.network "forwarded_port", guest: 8000, host: 8000 # java remode debug
-  config.vm.network "forwarded_port", guest: 9000, host: 9000 # swagger-editor
-  config.vm.network "forwarded_port", guest: 2525, host: 2525 # fakesmtp
+  config.vm.network "forwarded_port", guest: 3306,  host: 3306 # mysql
+  config.vm.network "forwarded_port", guest: 5432,  host: 5432 # postgres
+  config.vm.network "forwarded_port", guest: 8080,  host: 8080 # tomcat
+  config.vm.network "forwarded_port", guest: 80,    host: 1080 # nginx
+  config.vm.network "forwarded_port", guest: 8000,  host: 8000 # java remode debug
+  config.vm.network "forwarded_port", guest: 9000,  host: 9000 # swagger-editor
+  config.vm.network "forwarded_port", guest: 2525,  host: 2525 # fakesmtp
   config.vm.network "private_network", ip: "192.168.56.254"
   config.vm.hostname = "devops"
 
@@ -50,7 +53,6 @@ Vagrant.configure("2") do |config|
       mem = 4096
     end
 
-    virtualbox.name ="vagrant-ubuntu"
     virtualbox.gui = false
     virtualbox.customize ["modifyvm", :id, "--memory", mem]
     virtualbox.customize ["modifyvm", :id, "--cpus", cpus]
@@ -59,6 +61,13 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
     virtualbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
     virtualbox.customize ["modifyvm", :id, "--nictype2", "virtio"]
+    virtualbox.name = vmName
+
+    extraDisk = ENV['HOME'] + "/VirtualBox VMs/" + vmName + "/ubuntu-extra.vmdk"
+    unless File.exist?(extraDisk)
+      virtualbox.customize ['createhd', '--filename', extraDisk, '--variant', 'Standard', '--size', 5 * 1024]
+    end
+    virtualbox.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', extraDisk]
 
   end
   
