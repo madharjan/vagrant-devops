@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
 
     extraDisk = ENV['HOME'] + "/VirtualBox VMs/" + vmName + "/ubuntu-extra.vmdk"
     unless File.exist?(extraDisk)
-      virtualbox.customize ['createhd', '--filename', extraDisk, '--variant', 'Standard', '--size', 5 * 1024]
+      virtualbox.customize ['createhd', '--filename', extraDisk, '--variant', 'Standard', '--size', 10 * 1024]
     end
     virtualbox.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', extraDisk]
 
