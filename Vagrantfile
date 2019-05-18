@@ -1,14 +1,31 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require "rbconfig"
+def is_provisioned(vm_name='default', provider='virtualbox')
+  File.exist?(".vagrant/machines/#{vm_name}/#{provider}/action_provision")
+end
 
 vmName = "vagrant-ubuntu"
 workspaceRoot = ENV['WORKSPACE_ROOT'] || './workspace'
 
 Vagrant.configure("2") do |config|
 
+  # proxy
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.enabled = { docker: false }
+    if is_provisioned()
+      config.proxy.http     = ENV["http_proxy"] || "http://proxy-server:3128"
+      config.proxy.https    = ENV["https_proxy"] || "http://proxy-server:3128"
+      config.proxy.no_proxy = ENV["no_proxy"] || "localhost,127.0.0.1,192.168.56.254,10.0.2.15,192.168.56.0/24"
+    else 
+      config.proxy.http     = ENV["http_proxy"]
+      config.proxy.https    = ENV["https_proxy"]
+      config.proxy.no_proxy = ENV["no_proxy"]
+    end
+  end
+
   # network
+  config.vm.network "forwarded_port", guest: 3128,  host: 3128 # squid proxy
   config.vm.network "forwarded_port", guest: 3306,  host: 3306 # mysql
   config.vm.network "forwarded_port", guest: 5432,  host: 5432 # postgres
   config.vm.network "forwarded_port", guest: 8080,  host: 8080 # tomcat

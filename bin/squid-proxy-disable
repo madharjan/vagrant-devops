@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+FILE=/etc/squid/squid.conf.orig
+
+if [ -f $FILE ]; then
+   echo "Restoring of original squid config ..."
+   sudo rm /etc/squid/squid.conf
+   sudo cp /etc/squid/squid.conf.orig /etc/squid/squid.conf
+else
+   echo "Creating backup of original squid config ..."
+   sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.orig
+fi
+
+cat <<EOT | sudo tee -a /etc/squid/squid.conf
+acl SSL_ports port 22
+acl Safe_ports port 22
+#acl localdst dstdomain registry.local
+#always_direct allow localdst
+EOT
+
+sudo sed -i -e 's/# should be allowed/acl localnet src 172\.17\.0\.0\/16 192\.168\.0\.0\/16 10\.0\.0\.0\/8 /g' /etc/squid/squid.conf
+sudo sed -i '/#http_access allow localnet/s/^#//g' /etc/squid/squid.conf
+
+echo "Restarting squid ..."
+sudo systemctl restart squid
+echo "Restarting squid ... Done"

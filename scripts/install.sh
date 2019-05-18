@@ -2,12 +2,17 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo "*** Mount /dev/sdc for Docker ..."
+echo "*** Mount /dev/sdc as /opt..."
 echo "================================================================="
 mkfs.ext4 /dev/sdc
 sed -i '/dev\/sdc/d' /etc/fstab
-echo "/dev/sdc /var/lib/docker  ext4  defaults 0 0" >> /etc/fstab
-mount /var/lib/docker
+echo "/dev/sdc /opt  ext4  defaults 0 0" >> /etc/fstab
+
+mv /opt /opt1
+mkdir /opt
+mount /opt
+mv /opt1/* /opt
+rm -rf /opt1
 echo "-----------------------------------------------------------------"
 
 echo "-----------------------------------------------------------------"
@@ -18,7 +23,7 @@ echo "-----------------------------------------------------------------"
 
 echo "*** Installing Development Tools ..."
 echo "================================================================="
-apt-get install -y git-core default-jdk wget curl dos2unix build-essential bash-completion htop tree jq
+apt-get install -y git-core default-jdk wget curl dos2unix build-essential bash-completion squid htop tree jq
 apt-get install -y unzip xvfb libxi6 libgconf-2-4 chromium-browser chromium-chromedriver
 echo "-----------------------------------------------------------------"
 
@@ -34,7 +39,8 @@ echo "-----------------------------------------------------------------"
 
 echo "*** Installing Node Version Manager (NVM) ..."
 echo "================================================================="
-curl -o /home/vagrant/bin/nvm_install.sh https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh
+wget -nv https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh
+mv install.sh /home/vagrant/bin/nvm_install.sh
 chmod +x /home/vagrant/bin/nvm_install.sh
 chown vagrant:vagrant /home/vagrant/bin/nvm_install.sh
 echo "-----------------------------------------------------------------"
@@ -42,5 +48,9 @@ echo "-----------------------------------------------------------------"
 echo "*** Installing FakeSMTP ..."
 echo "================================================================="
 mkdir -p /opt/fakesmtp
-curl --noproxy "*" --insecure -o /opt/fakesmtp/fakesmtp-2.0.jar https://nexus.local/repository/downloads/fakesmtp/fakeSMTP-2.0.jar
+
+wget -nv http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip
+unzip fakeSMTP-latest.zip
+cp fakeSMTP-2.0.jar /opt/fakesmtp/fakesmtp-2.0.jar 
+rm fakeSMTP-latest.zip
 echo "-----------------------------------------------------------------"

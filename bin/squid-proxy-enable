@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+if [ -z "$2" ];
+then
+  echo "Usage: ${0} <cache_peer_host> <cache_peer_port> [username] [password]"
+  exit 0
+fi
+
+PROXY=${1}
+PORT=${2}
+USERNAME=${3}
+PASSWORD=${4}
+FILE=/etc/squid/squid.conf.orig
+
+if [ -z ${USERNAME} ]; then
+  echo "No username & password provided"
+else 
+  AUTHENTICATION = "login=${USERNAME}:${PASSWORD}"
+fi
+
+if [ -f $FILE ]; then
+   echo "Restoring of original squid config ..."
+   sudo rm /etc/squid/squid.conf
+   sudo cp /etc/squid/squid.conf.orig /etc/squid/squid.conf
+else
+   echo "Creating backup of original squid config ..."
+   sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.orig
+fi
+
+cat <<EOT | sudo tee -a /etc/squid/squid.conf
+acl SSL_ports port 22
+acl Safe_ports port 22
+#acl localdst dstdomain registry.local
+cache_peer ${PROXY} parent ${PORT} 0 no-query no-digest ${AUTHENTICATION}
+#always_direct allow localdst
+never_direct allow all
+EOT
+
+sudo sed -i -e 's/# should be allowed/acl localnet src 172\.17\.0\.0\/16 192\.168\.0\.0\/16 10\.0\.0\.0\/8 /g' /etc/squid/squid.conf
+sudo sed -i '/#http_access allow localnet/s/^#//g' /etc/squid/squid.conf
+
+MY_IP=$(ifconfig enp0s8 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://')
+sudo sed -i -e'/proxy-server/d' /etc/hosts
+echo "${MY_IP} proxy-server" | sudo tee -a /etc/hosts
+
+echo "Restarting squid ..."
+sudo systemctl restart squid
+echo "Restarting squid ... Done"
