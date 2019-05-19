@@ -26,7 +26,7 @@ echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' | sudo tee -a /etc/environ
 sudo sed -i -e'/DOCKER_DRIVER/d' /etc/environment
 echo 'DOCKER_DRIVER=overlay2' | sudo tee -a /etc/environment
 sudo sed -i -e'/DOCKER_CONFIG/d' /etc/environment
-echo 'DOCKER_CONFIG=${HOME}/.docker' | sudo tee -a /etc/environment
+echo "DOCKER_CONFIG=${HOME}/.docker" | sudo tee -a /etc/environment
 echo "-----------------------------------------------------------------"
 
 echo " * Adding MOTD ..."
@@ -57,7 +57,7 @@ sudo sed -i -e'/proxy_port/d' /etc/environment
 sudo sed -i -e'/non_proxy/d' /etc/environment
 echo "proxy_host=proxy-server" | sudo tee -a /etc/environment
 echo "proxy_port=3128" | sudo tee -a /etc/environment
-echo "non_proxy=localhost|127.0.0.1|192.168.56.*" | sudo tee -a /etc/environment
+echo 'non_proxy="localhost|127.0.0.1|192.168.56.*"' | sudo tee -a /etc/environment
 echo "http_proxy=http://proxy-server:3128" | sudo tee -a /etc/environment
 echo "http_proxy=http://proxy-server:3128" | sudo tee -a /etc/environment
 echo "no_proxy=localhost.127.0.0.1,192.168.56.0/24" | sudo tee -a /etc/environment
