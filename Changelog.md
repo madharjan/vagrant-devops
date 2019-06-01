@@ -7,6 +7,7 @@
   * nvm - v0.33.11
   * fakesmtp - v2.0
   * swagger editor - latest
+  * docker-compose- v1.24.0
 
 # 14.04 Trusty
 

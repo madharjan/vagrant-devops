@@ -12,6 +12,7 @@ Ubuntu 16.04 for Development (DevOps)
 * squid - v3.5.12
 * tree - v1.7.0
 * docker - v18.09.2
+* docker-compose- v1.24.0
 * java7 - OpenJDK v1.8.0_191
 * jq - v1.5.1
 * python - v2.7.12
