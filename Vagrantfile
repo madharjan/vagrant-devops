@@ -5,7 +5,7 @@ def is_provisioned(vm_name='default', provider='virtualbox')
   File.exist?(".vagrant/machines/#{vm_name}/#{provider}/action_provision")
 end
 
-vmName = "vagrant-ubuntu"
+vmName = "vagrant-devops"
 workspaceRoot = ENV['WORKSPACE_ROOT'] || './workspace'
 
 Vagrant.configure("2") do |config|
